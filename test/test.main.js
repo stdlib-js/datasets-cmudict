@@ -35,7 +35,7 @@ tape( 'main export is a function', function test( t ) {
 
 tape( 'the function throws an error if unable to load data (no options)', function test( t ) {
 	var cmudict = proxyquire( './../lib/main.js', {
-		'@stdlib/fs/read-json': {
+		'@stdlib/fs-read-json': {
 			'sync': readJSON
 		}
 	});
@@ -49,7 +49,7 @@ tape( 'the function throws an error if unable to load data (no options)', functi
 
 tape( 'the function throws an error if unable to load data (options)', function test( t ) {
 	var cmudict = proxyquire( './../lib/main.js', {
-		'@stdlib/fs/read-json': {
+		'@stdlib/fs-read-json': {
 			'sync': readJSON
 		}
 	});
