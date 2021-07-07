@@ -45,10 +45,9 @@
   },
   "dependencies": {
     "@stdlib/assert-has-own-property": "^0.0.x",
-    "@stdlib/assert-is-browser": "^0.0.x",
     "@stdlib/assert-is-plain-object": "^0.0.x",
     "@stdlib/assert-is-string": "^0.0.x",
-    "@stdlib/cli": "^0.0.x",
+    "@stdlib/cli-ctor": "^0.0.x",
     "@stdlib/fs-read-file": "^0.0.x",
     "@stdlib/fs-read-json": "^0.0.x",
     "@stdlib/streams-node-stdout": "^0.0.x",
@@ -58,6 +57,7 @@
   },
   "devDependencies": {
     "@stdlib/assert-is-array": "^0.0.x",
+    "@stdlib/assert-is-browser": "^0.0.x",
     "@stdlib/assert-is-string-array": "^0.0.x",
     "@stdlib/assert-is-windows": "^0.0.x",
     "@stdlib/bench": "^0.0.x",
