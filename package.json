@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/datasets-cmudict",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "The Carnegie Mellon Pronouncing Dictionary (CMUdict).",
   "license": "Apache-2.0 and BSD",
   "author": {
