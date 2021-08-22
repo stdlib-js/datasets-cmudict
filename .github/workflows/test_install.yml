@@ -36,13 +36,15 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: 15
+          node-version: 16
+        timeout-minutes: 5
       - name: Install production dependencies via npm
         run: |
           npm install --only=prod || npm install --only=prod || npm install --only=prod
+        timeout-minutes: 15
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
