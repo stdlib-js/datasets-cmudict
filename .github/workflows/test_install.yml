@@ -17,7 +17,7 @@
 #/
 
 # Workflow name:
-name: Test Installing Dependencies
+name: test_install
 
 # Workflow triggers:
 on:
@@ -25,7 +25,7 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron:  '30 1 * * 6'
   workflow_run:
-    workflows: ["Publish Package"]
+    workflows: ["publish"]
     types: [completed]
   workflow_dispatch:
 
@@ -37,7 +37,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
           node-version: 16
