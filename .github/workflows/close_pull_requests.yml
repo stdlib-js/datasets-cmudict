@@ -17,7 +17,7 @@
 #/
 
 # Workflow name:
-name: Close Pull Requests
+name: close_pull_requests
 
 # Workflow triggers:
 on:
