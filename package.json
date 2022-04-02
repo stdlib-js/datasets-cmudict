@@ -1,0 +1,34 @@
+{
+  "name": "@stdlib/datasets-cmudict",
+  "version": "0.0.0",
+  "description": "The Carnegie Mellon Pronouncing Dictionary (CMUdict).",
+  "license": "Apache-2.0 and BSD",
+  "main": "./bundle.js",
+  "homepage": "https://stdlib.io",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stdlib-js/datasets-cmudict.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stdlib-js/stdlib/issues"
+  },
+  "keywords": [
+    "stdlib",
+    "datasets",
+    "dataset",
+    "data",
+    "words",
+    "speech",
+    "language",
+    "nlp",
+    "spelling",
+    "pronounciation",
+    "dictionary",
+    "english",
+    "en"
+  ],
+  "funding": {
+    "type": "patreon",
+    "url": "https://www.patreon.com/athan"
+  }
+}
