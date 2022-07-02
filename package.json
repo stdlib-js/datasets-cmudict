@@ -3,8 +3,37 @@
   "version": "0.0.8",
   "description": "The Carnegie Mellon Pronouncing Dictionary (CMUdict).",
   "license": "Apache-2.0 and BSD",
-  "type": "module",
-  "main": "./index.mjs",
+  "author": {
+    "name": "The Stdlib Authors",
+    "url": "https://github.com/stdlib-js/stdlib/graphs/contributors"
+  },
+  "contributors": [
+    {
+      "name": "The Stdlib Authors",
+      "url": "https://github.com/stdlib-js/stdlib/graphs/contributors"
+    }
+  ],
+  "bin": {
+    "cmudict": "./bin/cli"
+  },
+  "main": "./lib",
+  "browser": "./lib/browser.js",
+  "directories": {
+    "benchmark": "./benchmark",
+    "data": "./data",
+    "doc": "./docs",
+    "example": "./examples",
+    "lib": "./lib",
+    "scripts": "./scripts",
+    "test": "./test"
+  },
+  "types": "./docs/types",
+  "scripts": {
+    "test": "make test",
+    "test-cov": "make test-cov",
+    "examples": "make examples",
+    "benchmark": "make benchmark"
+  },
   "homepage": "https://stdlib.io",
   "repository": {
     "type": "git",
@@ -13,6 +42,47 @@
   "bugs": {
     "url": "https://github.com/stdlib-js/stdlib/issues"
   },
+  "dependencies": {
+    "@stdlib/assert-has-own-property": "^0.0.x",
+    "@stdlib/assert-is-plain-object": "^0.0.x",
+    "@stdlib/assert-is-string": "^0.0.x",
+    "@stdlib/cli-ctor": "^0.0.x",
+    "@stdlib/fs-read-file": "^0.0.x",
+    "@stdlib/fs-read-json": "^0.0.x",
+    "@stdlib/streams-node-stdout": "^0.0.x",
+    "@stdlib/error-tools-fmtprodmsg": "^0.0.x",
+    "@stdlib/utils-copy": "^0.0.x",
+    "@stdlib/utils-index-of": "^0.0.x",
+    "@stdlib/utils-keys": "^0.0.x"
+  },
+  "devDependencies": {
+    "@stdlib/assert-is-array": "^0.0.x",
+    "@stdlib/assert-is-browser": "^0.0.x",
+    "@stdlib/assert-is-string-array": "^0.0.x",
+    "@stdlib/assert-is-windows": "^0.0.x",
+    "@stdlib/bench": "^0.0.x",
+    "@stdlib/process-exec-path": "^0.0.x",
+    "@stdlib/regexp-eol": "^0.0.x",
+    "proxyquire": "^2.0.0",
+    "tape": "git+https://github.com/kgryte/tape.git#fix/globby",
+    "istanbul": "^0.4.1",
+    "tap-spec": "5.x.x"
+  },
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">2.7.0"
+  },
+  "os": [
+    "aix",
+    "darwin",
+    "freebsd",
+    "linux",
+    "macos",
+    "openbsd",
+    "sunos",
+    "win32",
+    "windows"
+  ],
   "keywords": [
     "stdlib",
     "datasets",
