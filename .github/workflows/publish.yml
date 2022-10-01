@@ -1,0 +1,117 @@
+#/
+# @license Apache-2.0
+#
+# Copyright (c) 2021 The Stdlib Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#/
+
+# Workflow name:
+name: publish
+
+# Workflow triggers:
+on:
+  # Run workflow when a new tag is pushed to the repository:
+  push:
+    tags: v[0-9]+.[0-9]+.[0-9]+
+
+# Workflow jobs:
+jobs:
+
+  # Define job to publish package to npm:
+  publish:
+
+    # Define display name:
+    name: 'Publish to npm'
+
+    # Define the type of virtual host machine on which to run the job:
+    runs-on: ubuntu-latest
+
+    # Define environment variables:
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    # Define the sequence of job steps...
+    steps:
+
+      # Checkout the repository:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+
+      # Install Node.js:
+      - name: 'Install Node.js'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+        timeout-minutes: 5
+
+      # Replace GitHub links to individual packages with npm links:
+      - name: 'Replace all GitHub links to individual packages with npm links'
+        run: |
+          find . -type f -name '*.md' -print0 | xargs -0 sed -Ei '/tree\/main/b; s/@stdlib\/([^:]*)\]: https:\/\/github.com\/stdlib-js/@stdlib\/\1\]: https:\/\/www.npmjs.com\/package\/@stdlib/g'
+
+      # Replace list with links to other branches from installation section:
+      - name: 'Replace list with links to other branches from installation section'
+        run: |
+          find . -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/\`\`\`\n\nAlternatively,[^<]+<\/section>/\`\`\`\n\n<\/section>/"
+
+      # Replace all stdlib GitHub dependencies with the respective npm packages:
+      - name: 'Replace all stdlib GitHub dependencies with the respective npm packages'
+        run: |
+          find package.json -type f -print0 | xargs -0 sed -Ei 's/"github:stdlib-js[^"]*"/"^0.0.x"/g'
+
+      # Publish package to npm:
+      - name: 'Publish package to npm'
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public
+
+      # Discard any uncommitted changes:
+      - name: 'Discard any uncommitted changes'
+        run: |
+          git reset --hard
+
+      # Send status to Slack channel if job fails:
+      - name: 'Send status to Slack channel in case of failure'
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#npm-ci'
+        if: failure()
+
+  # Define job to cancel any running or queued workflow runs...
+  cancel:
+
+    # Define the type of virtual host machine on which to run the job:
+    runs-on: ubuntu-latest
+
+    # Time out the job after 3 minutes:
+    timeout-minutes: 3
+
+    # Define the sequence of job steps...
+    steps:
+
+      # Cancel any running or queued workflow runs:
+      - name: 'Cancel running or queued workflow runs'
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          workflow_id: >-
+            benchmark.yml,
+            examples.yml,
+            test.yml,
+            test_coverage.yml,
+            test_install.yml,
+            publish.yml
+          access_token: ${{ github.token }}
