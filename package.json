@@ -50,7 +50,7 @@
     "@stdlib/fs-read-file": "^0.0.x",
     "@stdlib/fs-read-json": "^0.0.x",
     "@stdlib/streams-node-stdout": "^0.0.x",
-    "@stdlib/string-format": "^0.0.x",
+    "@stdlib/error-tools-fmtprodmsg": "^0.0.x",
     "@stdlib/utils-copy": "^0.0.x",
     "@stdlib/utils-index-of": "^0.0.x",
     "@stdlib/utils-keys": "^0.0.x"
