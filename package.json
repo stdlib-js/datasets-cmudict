@@ -66,7 +66,7 @@
     "proxyquire": "^2.0.0",
     "tape": "git+https://github.com/kgryte/tape.git#fix/globby",
     "istanbul": "^0.4.1",
-    "tap-min": "2.x.x"
+    "tap-min": "git+https://github.com/Planeshifter/tap-min.git"
   },
   "engines": {
     "node": ">=0.10.0",
