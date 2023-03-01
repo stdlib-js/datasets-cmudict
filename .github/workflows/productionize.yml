@@ -34,6 +34,11 @@ on:
         type: boolean
         default: true
 
+  # Run workflow upon completion of `publish` workflow run:
+  workflow_run:
+    workflows: ["publish"]
+    types: [completed]
+
 # Concurrency group to prevent multiple concurrent executions:
 concurrency:
   group: productionize
@@ -94,10 +99,11 @@ jobs:
       # Change `@stdlib/string-format` to `@stdlib/error-tools-fmtprodmsg` in package.json if the former is a dependency, otherwise insert it as a dependency:
       - name: 'Update dependencies in package.json'
         run: |
+          PKG_VERSION=$(npm view @stdlib/error-tools-fmtprodmsg version)
           if grep -q '"@stdlib/string-format"' package.json; then
-            sed -i "s/\"@stdlib\/string-format\"/\"@stdlib\/error-tools-fmtprodmsg\"/g" package.json
+            sed -i "s/\"@stdlib\/string-format\": \"^.*\"/\"@stdlib\/error-tools-fmtprodmsg\": \"^$PKG_VERSION\"/g" package.json
           else
-            node -e "var pkg = require( './package.json' ); pkg.dependencies[ '@stdlib/error-tools-fmtprodmsg' ] = '^0.0.x'; require( 'fs' ).writeFileSync( 'package.json', JSON.stringify( pkg, null, 2 ) );"
+            node -e "var pkg = require( './package.json' ); pkg.dependencies[ '@stdlib/error-tools-fmtprodmsg' ] = '^$PKG_VERSION'; require( 'fs' ).writeFileSync( 'package.json', JSON.stringify( pkg, null, 2 ) );"
           fi
 
       # Configure git:
@@ -462,7 +468,6 @@ jobs:
       # Rewrite file contents:
       - name: 'Rewrite file contents'
         run: |
-
           # Replace links to other packages with links to the umd branch:
           find ./umd -type f -name '*.md' -print0 | xargs -0 sed -Ei "/\/tree\/main/b; /^\[@stdlib[^:]+: https:\/\/github.com\/stdlib-js\// s/(.*)/\\1\/tree\/umd/";
 
@@ -625,7 +630,6 @@ jobs:
       # Rewrite file contents:
       - name: 'Rewrite file contents'
         run: |
-
           # Replace links to other packages with links to the esm branch:
           find ./esm -type f -name '*.md' -print0 | xargs -0 sed -Ei "/\/tree\/main/b; /^\[@stdlib[^:]+: https:\/\/github.com\/stdlib-js\// s/(.*)/\\1\/tree\/esm/";
 
@@ -697,6 +701,198 @@ jobs:
           channel: '#npm-ci'
         if: failure()
 
+  # Define job to create CLI branch:
+  cli:
+
+    # Define display name:
+    name: 'Create CLI branch'
+
+    # Define the type of virtual host machine on which to run the job:
+    runs-on: ubuntu-latest
+
+    # Indicate that this job depends on the test job finishing:
+    needs: test
+
+    # Define the sequence of job steps...
+    steps:
+      # Checkout the repository:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+
+      # Configure git:
+      - name: 'Configure git'
+        run: |
+          git config --local user.email "noreply@stdlib.io"
+          git config --local user.name "stdlib-bot"
+
+      # Check if remote `cli` branch exists:
+      - name: 'Check if remote `cli` branch exists'
+        id: cli-branch-exists
+        continue-on-error: true
+        run: |
+          git fetch --all
+          git ls-remote --exit-code --heads origin cli
+          if [ $? -eq 0 ]; then
+            echo "remote-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "remote-exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      # If `cli` exists, delete everything in branch and merge `production` into it
+      - name: 'If `cli` exists, delete everything in branch and merge `production` into it'
+        if: steps.cli-branch-exists.outputs.remote-exists
+        run: |
+          git checkout -b cli origin/cli
+
+          find . -type 'f' | grep -v -e ".git/" -e "package.json" -e "README.md" -e "LICENSE"  -e "CONTRIBUTORS" -e "NOTICE" | xargs -r rm
+          find . -mindepth 1 -type 'd' | grep -v -e ".git" | xargs -r rm -rf
+
+          git add -A
+          git commit -m "Remove files" --allow-empty
+
+          git config merge.theirs.name 'simulate `-s theirs`'
+          git config merge.theirs.driver 'cat %B > %A'
+          GIT_CONFIG_PARAMETERS="'merge.default=theirs'" git merge origin/production --allow-unrelated-histories
+
+          # Copy files from `production` branch if necessary:
+          git checkout origin/production -- .
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "Auto-generated commit"
+          fi
+
+      # If `cli` does not exist, create `cli` branch:
+      - name: 'If `cli` does not exist, create `cli` branch'
+        if: ${{ steps.cli-branch-exists.outputs.remote-exists == false }}
+        run: |
+          git checkout production
+          git checkout -b cli
+
+      # Copy files to cli directory:
+      - name: 'Copy files to cli directory'
+        run: |
+          mkdir -p cli
+          mkdir -p cli/docs cli/test
+          cp README.md LICENSE CONTRIBUTORS NOTICE ./cli
+          cp -r bin etc ./cli
+          cp test/test.cli.js ./cli/test
+          if [ -d "test/fixtures" ]; then
+            cp -r test/fixtures ./cli/test
+          fi
+          cp docs/usage.txt ./cli/docs
+
+      # Install Node.js:
+      - name: 'Install Node.js'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+        timeout-minutes: 5
+
+      # Install dependencies:
+      - name: 'Install production and development dependencies'
+        id: install
+        run: |
+          npm install || npm install || npm install
+        timeout-minutes: 15
+
+      # Rewrite file contents:
+      - name: 'Rewrite file contents'
+        run: |
+          # Define variable for package name:
+          pkg="$(jq -r '.name' ./package.json)"
+          escapedPkg=$(echo "$pkg" | sed -e 's/\//\\\//g')
+          escapedPkg=$(echo "$escapedPkg" | sed -e 's/\@/\\\@/g')
+
+          # Define variable for package description:
+          pkgDescription="$(jq -r '.description' ./package.json)"
+          pkgDescription="$(echo "$pkgDescription" | sed -e 's/^\([A-Z]\)/\L\1/')"
+
+          # Remove sections:
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/<section class=\"installation\">[^<]+<\/section>//;"
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/(\* \* \*\n+)?<section class=\"usage\">[\s\S]+?<\!\-\- \/.usage \-\->//"
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/(\* \* \*\n+)?<section class=\"notes\">[\s\S]+?<\!\-\- \/.notes \-\->//"
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/(\* \* \*\n+)?<section class=\"examples\">[\s\S]+?<\!\-\- \/.examples \-\->//"
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/(\* \* \*\n+)?<section class=\"c\">[\s\S]+?<\!\-\- \/.c \-\->//g"
+
+          # Remove first horizontal rule * * *:
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/(\* \* \*)//"
+
+          # Remove ## CLI heading:
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/## CLI//"
+
+          # Change heading levels:
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/###/##/g"
+
+          # Append -cli to package name unless it already ends with -cli:
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/(?<!\[)($escapedPkg)(?!-cli)/\1-cli/g"
+
+          # Insert a link to the main package:
+          find ./cli -type f -name '*.md' -print0 | xargs -0 perl -0777 -i -pe "s/<section class=\"related\">(?:\n\n\* \* \*\n\n## See Also\n\n)?/<section class=\"related\">\n\n## See Also\n\n-   <span class=\"package-name\">[\`$escapedPkg\`][$escapedPkg]<\/span><span class=\"delimiter\">: <\/span><span class=\"description\">$pkgDescription<\/span>\n/"
+
+          # Create package.json file for cli branch:
+          jq --indent 2 '.name = .name + "-cli" | {"name": .name, "version": .version, "description": .description, "license": .license, "author": .author, "contributors": .contributors, "bin": .bin, "homepage": .homepage, "repository": .repository, "bugs": .bugs, "dependencies": .dependencies, "devDependencies": .devDependencies, "keywords": .keywords, "funding": .funding}' package.json > ./cli/package.json
+
+          # Add implementation package as dependency:
+          version=$(npm view "$pkg" version)
+          jq --indent 2 ".dependencies[\"$pkg\"] = \"$version\"" ./cli/package.json > ./cli/package.json.tmp
+          mv ./cli/package.json.tmp ./cli/package.json
+
+          # Rewrite require of main module in bin/cli to depend on external package:
+          perl -0777 -i -pe "s/require\( \'\.\/\.\.\/lib\' \)/require\( \'$escapedPkg\' \)/" ./cli/bin/cli
+
+          # For all dependencies, check if they are required by the CLI; if not, remove them:
+          jq -r '.dependencies | keys[]' ./cli/package.json | while read -r dep; do
+            dep=$(echo "$dep" | xargs)
+            if ! grep -q "$dep" ./cli/test/** && ! grep -q "$dep" ./cli/bin/**; then
+              jq --indent 2 "del(.dependencies[\"$dep\"])" ./cli/package.json > ./cli/package.json.tmp
+              mv ./cli/package.json.tmp ./cli/package.json
+            fi
+          done
+          jq -r '.devDependencies | keys[]' ./cli/package.json | while read -r dep; do
+            if [[ "$dep" != "@stdlib"* ]]; then
+              continue
+            fi
+            dep=$(echo "$dep" | xargs)
+            if ! grep -q "$dep" ./cli/test/** && ! grep -q "$dep" ./cli/bin/**; then
+              jq --indent 2 "del(.devDependencies[\"$dep\"])" ./cli/package.json > ./cli/package.json.tmp
+              mv ./cli/package.json.tmp ./cli/package.json
+            fi
+          done
+
+      # Delete everything in current directory aside from cli folder:
+      - name: 'Delete everything in current directory aside from cli folder'
+        run: |
+          find . -type 'f' | grep -v -e "cli" -e ".git/" | xargs -r rm
+          find . -mindepth 1 -type 'd' | grep -v -e "cli" -e ".git" | xargs -r rm -rf
+
+      # Move cli directory to root:
+      - name: 'Move cli directory to root'
+        run: |
+          mv ./cli/* .
+          rmdir ./cli
+
+      # Commit changes:
+      - name: 'Commit changes'
+        run: |
+          git add -A
+          git commit -m "Auto-generated commit"
+
+      # Push changes to `cli` branch:
+      - name: 'Push changes to `cli` branch'
+        run: |
+          SLUG=${{ github.repository }}
+          echo "Pushing changes to $SLUG..."
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" cli
+
+      # Send status to Slack channel if job fails:
+      - name: 'Send status to Slack channel in case of failure'
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#npm-ci'
+        if: failure()
+
   # Define job that succeeds if all bundles were successfully built:
   create-tag-bundles:
 
@@ -707,7 +903,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Indicate that this job depends on the bundle jobs finishing:
-    needs: [ deno, umd, esm ]
+    needs: [ deno, umd, esm, cli ]
 
     # Define the steps to be executed:
     steps:
@@ -789,3 +985,23 @@ jobs:
           git add README.md
           git commit -m "Auto-generated commit"
           git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" esm
+
+          git checkout -b cli origin/cli
+          sed -i -E "s/$ESCAPED/$ESCAPED@$VERSION/g" README.md
+          git add README.md
+          git commit -m "Update README.md for CLI branch $VERSION"
+          git tag -a $VERSION-cli -m "$VERSION-cli"
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" $VERSION-cli
+
+          sed -i -E "s/$ESCAPED@$VERSION/$ESCAPED/g" README.md
+          git add README.md
+          git commit -m "Auto-generated commit"
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" cli
+
+      # Run publish workflow for CLI package:
+      - name: 'Run publish workflow for CLI package'
+        if: steps.check-if-bump.outputs.bump
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          gh workflow run publish_cli.yml
