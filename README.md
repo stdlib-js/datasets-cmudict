@@ -43,31 +43,38 @@ The [Carnegie Mellon University Pronouncing Dictionary (CMUDict)][cmudict], crea
 
 <!-- /.intro -->
 
-<section class="installation">
 
-## Installation
-
-```bash
-npm install @stdlib/datasets-cmudict
-```
-
-Alternatively,
-
--   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm` branch][esm-url].
--   If you are using Deno, visit the [`deno` branch][deno-url].
--   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd` branch][umd-url].
--   To use as a general utility for the command line, install the corresponding [CLI package][cli-section] globally.
-
-The [branches.md][branches-url] file summarizes the available branches and displays a diagram illustrating their relationships.
-
-</section>
 
 <section class="usage">
 
 ## Usage
 
+To use in Observable,
+
 ```javascript
-var cmudict = require( '@stdlib/datasets-cmudict' );
+cmudict = require( 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@umd/browser.js' )
+```
+
+To vendor stdlib functionality and avoid installing dependency trees for Node.js, you can use the UMD server build:
+
+```javascript
+var cmudict = require( 'path/to/vendor/umd/datasets-cmudict/index.js' )
+```
+
+To include the bundle in a webpage,
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@umd/browser.js"></script>
+```
+
+If no recognized module system is present, access bundle contents via the global scope:
+
+```html
+<script type="text/javascript">
+(function () {
+    window.cmudict;
+})();
+</script>
 ```
 
 #### cmudict( \[options] )
@@ -188,8 +195,13 @@ var data = cmudict( opts );
 
 <!-- eslint no-undef: "error" -->
 
-```javascript
-var cmudict = require( '@stdlib/datasets-cmudict' );
+```html
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@umd/browser.js"></script>
+<script type="text/javascript">
+(function () {
 
 var opts = {};
 
@@ -201,80 +213,18 @@ console.dir( cmudict( opts ) );
 
 opts.data = 'dict';
 console.dir( cmudict( opts ) );
+
+})();
+</script>
+</body>
+</html>
 ```
 
 </section>
 
 <!-- /.examples -->
 
-* * *
 
-<section class="cli">
-
-## CLI
-
-<section class="installation">
-
-## Installation
-
-To use as a general utility, install the CLI package globally
-
-```bash
-npm install -g @stdlib/datasets-cmudict-cli
-```
-
-</section>
-
-<!-- CLI usage documentation. -->
-
-<section class="usage">
-
-### Usage
-
-```text
-Usage: cmudict [options]
-
-Options:
-
-  -h,    --help                Print this message.
-  -V,    --version             Print the package version.
-         --data name           Dataset name: dict, phones, symbols, vp.
-```
-
-</section>
-
-<!-- /.usage -->
-
-<section class="notes">
-
-### Notes
-
--   If the `--data` option is set to a supported dataset name, the CLI prints the contents of the respective dataset file as plain text. Otherwise, the output format is newline-delimited JSON ([NDJSON][ndjson]).
-
-</section>
-
-<!-- /.notes -->
-
-<section class="examples">
-
-### Examples
-
-```bash
-$ cmudict --data symbols
-AA
-AA0
-AA1
-AA2
-...
-```
-
-</section>
-
-<!-- /.examples -->
-
-</section>
-
-<!-- /.cli -->
 
 * * *
 
