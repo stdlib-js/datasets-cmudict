@@ -1,5 +1,5 @@
 {
-  "name": "@stdlib/datasets-cmudict",
+  "name": "@stdlib/datasets-cmudict-cli",
   "version": "0.1.0",
   "description": "The Carnegie Mellon Pronouncing Dictionary (CMUdict).",
   "license": "Apache-2.0 and BSD",
@@ -16,24 +16,6 @@
   "bin": {
     "cmudict": "./bin/cli"
   },
-  "main": "./lib",
-  "browser": "./lib/browser.js",
-  "directories": {
-    "benchmark": "./benchmark",
-    "data": "./data",
-    "doc": "./docs",
-    "example": "./examples",
-    "lib": "./lib",
-    "scripts": "./scripts",
-    "test": "./test"
-  },
-  "types": "./docs/types",
-  "scripts": {
-    "test": "make test",
-    "test-cov": "make test-cov",
-    "examples": "make examples",
-    "benchmark": "make benchmark"
-  },
   "homepage": "https://stdlib.io",
   "repository": {
     "type": "git",
@@ -43,24 +25,16 @@
     "url": "https://github.com/stdlib-js/stdlib/issues"
   },
   "dependencies": {
-    "@stdlib/assert-has-own-property": "^0.1.0",
-    "@stdlib/assert-is-plain-object": "^0.1.0",
-    "@stdlib/assert-is-string": "^0.1.0",
     "@stdlib/cli-ctor": "^0.1.0",
     "@stdlib/fs-read-file": "^0.1.0",
-    "@stdlib/fs-read-json": "^0.1.0",
     "@stdlib/streams-node-stdout": "^0.1.0",
-    "@stdlib/error-tools-fmtprodmsg": "^0.1.0",
-    "@stdlib/utils-copy": "^0.1.0",
     "@stdlib/utils-index-of": "^0.1.0",
-    "@stdlib/utils-keys": "^0.1.0"
+    "@stdlib/utils-keys": "^0.1.0",
+    "@stdlib/datasets-cmudict": "0.1.0"
   },
   "devDependencies": {
-    "@stdlib/assert-is-array": "^0.1.0",
     "@stdlib/assert-is-browser": "^0.1.0",
-    "@stdlib/assert-is-string-array": "^0.1.0",
     "@stdlib/assert-is-windows": "^0.1.0",
-    "@stdlib/bench": "^0.1.0",
     "@stdlib/process-exec-path": "^0.1.0",
     "@stdlib/regexp-eol": "^0.1.0",
     "proxyquire": "^2.0.0",
@@ -68,21 +42,6 @@
     "istanbul": "^0.4.1",
     "tap-min": "git+https://github.com/Planeshifter/tap-min.git"
   },
-  "engines": {
-    "node": ">=0.10.0",
-    "npm": ">2.7.0"
-  },
-  "os": [
-    "aix",
-    "darwin",
-    "freebsd",
-    "linux",
-    "macos",
-    "openbsd",
-    "sunos",
-    "win32",
-    "windows"
-  ],
   "keywords": [
     "stdlib",
     "datasets",
