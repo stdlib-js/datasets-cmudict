@@ -50,7 +50,7 @@ The [Carnegie Mellon University Pronouncing Dictionary (CMUDict)][cmudict], crea
 ## Usage
 
 ```javascript
-import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@esm/index.mjs';
+import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@v0.1.0-esm/index.mjs';
 ```
 
 #### cmudict( \[options] )
@@ -177,7 +177,7 @@ var data = cmudict( opts );
 <body>
 <script type="module">
 
-import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@esm/index.mjs';
+import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@v0.1.0-esm/index.mjs';
 
 var opts = {};
 
