@@ -60,7 +60,7 @@
     "@stdlib/assert-is-browser": "^0.1.1",
     "@stdlib/assert-is-string-array": "^0.1.1",
     "@stdlib/assert-is-windows": "^0.1.1",
-    "@stdlib/bench": "^0.1.0",
+    "@stdlib/bench": "^0.2.1",
     "@stdlib/process-exec-path": "^0.1.1",
     "@stdlib/regexp-eol": "^0.1.1",
     "proxyquire": "^2.0.0",
