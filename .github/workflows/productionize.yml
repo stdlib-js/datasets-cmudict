@@ -60,8 +60,8 @@ jobs:
     steps:
       # Checkout main branch of repository:
       - name: 'Checkout main branch'
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
         with:
           ref: main
 
@@ -70,7 +70,7 @@ jobs:
         # Pin action to full length commit SHA corresponding to v3.8.1
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
         with:
-          node-version: 16
+          node-version: 20
         timeout-minutes: 5
 
       # Create production branch:
@@ -133,8 +133,8 @@ jobs:
       # Checkout the repository:
       - name: 'Checkout repository'
         if: ${{ github.event.inputs.require-passing-tests == 'true' }}
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
         with:
           # Use the `production` branch:
           ref: production
@@ -145,7 +145,7 @@ jobs:
         # Pin action to full length commit SHA corresponding to v3.8.1
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
         with:
-          node-version: 16
+          node-version: 20
         timeout-minutes: 5
 
       # Install dependencies:
@@ -187,8 +187,8 @@ jobs:
     steps:
       # Checkout the repository:
       - name: 'Checkout repository'
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
       # Configure git:
       - name: 'Configure git'
@@ -258,7 +258,7 @@ jobs:
         # Pin action to full length commit SHA corresponding to v3.8.1
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
         with:
-          node-version: 16
+          node-version: 20
         timeout-minutes: 5
 
       # Install dependencies:
@@ -363,8 +363,8 @@ jobs:
     steps:
       # Checkout the repository:
       - name: 'Checkout repository'
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
       # Configure git:
       - name: 'Configure git'
@@ -426,7 +426,7 @@ jobs:
         # Pin action to full length commit SHA corresponding to v3.8.1
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
         with:
-          node-version: 16
+          node-version: 20
         timeout-minutes: 5
 
       # Install dependencies:
@@ -536,8 +536,8 @@ jobs:
     steps:
       # Checkout the repository:
       - name: 'Checkout repository'
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
       # Configure git:
       - name: 'Configure git'
@@ -607,7 +607,7 @@ jobs:
         # Pin action to full length commit SHA corresponding to v3.8.1
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
         with:
-          node-version: 16
+          node-version: 20
         timeout-minutes: 5
 
       # Install dependencies:
@@ -715,8 +715,8 @@ jobs:
     steps:
       # Checkout the repository:
       - name: 'Checkout repository'
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
       # Configure git:
       - name: 'Configure git'
@@ -787,7 +787,7 @@ jobs:
         # Pin action to full length commit SHA corresponding to v3.8.1
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
         with:
-          node-version: 16
+          node-version: 20
         timeout-minutes: 5
 
       # Install dependencies:
@@ -913,8 +913,8 @@ jobs:
 
       # Checkout the repository:
       - name: 'Checkout repository'
-        # Pin action to full length commit SHA corresponding to v4.1.0
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+        # Pin action to full length commit SHA
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
         with:
           fetch-depth: 2
 
