@@ -1,6 +1,6 @@
 {
   "name": "@stdlib/datasets-cmudict",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The Carnegie Mellon Pronouncing Dictionary (CMUdict).",
   "license": "Apache-2.0 and BSD",
   "author": {
@@ -44,16 +44,16 @@
   },
   "dependencies": {
     "@stdlib/assert-has-own-property": "^0.1.1",
-    "@stdlib/assert-is-plain-object": "^0.1.1",
-    "@stdlib/assert-is-string": "^0.1.1",
+    "@stdlib/assert-is-plain-object": "^0.2.0",
+    "@stdlib/assert-is-string": "^0.2.0",
     "@stdlib/cli-ctor": "^0.1.1",
-    "@stdlib/fs-read-file": "^0.1.1",
-    "@stdlib/fs-read-json": "^0.1.1",
-    "@stdlib/streams-node-stdout": "^0.1.1",
-    "@stdlib/string-format": "^0.1.1",
-    "@stdlib/utils-copy": "^0.1.0",
-    "@stdlib/utils-index-of": "^0.1.0",
-    "@stdlib/utils-keys": "^0.1.0"
+    "@stdlib/fs-read-file": "^0.2.0",
+    "@stdlib/fs-read-json": "^0.2.0",
+    "@stdlib/streams-node-stdout": "^0.2.0",
+    "@stdlib/string-format": "^0.2.0",
+    "@stdlib/utils-copy": "^0.2.0",
+    "@stdlib/utils-index-of": "^0.2.0",
+    "@stdlib/utils-keys": "^0.2.0"
   },
   "devDependencies": {
     "@stdlib/assert-is-array": "^0.1.1",
@@ -61,12 +61,12 @@
     "@stdlib/assert-is-string-array": "^0.1.1",
     "@stdlib/assert-is-windows": "^0.1.1",
     "@stdlib/process-exec-path": "^0.1.1",
-    "@stdlib/regexp-eol": "^0.1.1",
+    "@stdlib/regexp-eol": "^0.2.0",
     "proxyquire": "^2.0.0",
     "tape": "git+https://github.com/kgryte/tape.git#fix/globby",
     "istanbul": "^0.4.1",
     "tap-min": "git+https://github.com/Planeshifter/tap-min.git",
-    "@stdlib/bench-harness": "^0.1.2"
+    "@stdlib/bench-harness": "^0.2.0"
   },
   "engines": {
     "node": ">=0.10.0",
