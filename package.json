@@ -53,7 +53,8 @@
     "@stdlib/string-format": "^0.2.1",
     "@stdlib/utils-copy": "^0.2.1",
     "@stdlib/utils-index-of": "^0.2.1",
-    "@stdlib/utils-keys": "^0.2.1"
+    "@stdlib/utils-keys": "^0.2.1",
+    "@stdlib/error-tools-fmtprodmsg": "^0.2.1"
   },
   "devDependencies": {
     "@stdlib/assert-is-array": "^0.2.1",
