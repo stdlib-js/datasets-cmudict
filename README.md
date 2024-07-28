@@ -50,6 +50,11 @@ The [Carnegie Mellon University Pronouncing Dictionary (CMUDict)][cmudict], crea
 ## Usage
 
 ```javascript
+import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@deno/mod.js';
+```
+The previous example will load the latest bundled code from the deno branch. Alternatively, you may load a specific version by loading the file from one of the [tagged bundles](https://github.com/stdlib-js/datasets-cmudict/tags). For example,
+
+```javascript
 import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@v0.2.2-deno/mod.js';
 ```
 
@@ -172,7 +177,7 @@ var data = cmudict( opts );
 <!-- eslint no-undef: "error" -->
 
 ```javascript
-import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@v0.2.2-deno/mod.js';
+import cmudict from 'https://cdn.jsdelivr.net/gh/stdlib-js/datasets-cmudict@deno/mod.js';
 
 var opts = {};
 
