@@ -92,10 +92,10 @@ The function accepts the following `options`:
 
 -   **data**: dataset name. The following names are recognized:
 
-    -   **dict**: the main pronouncing dictionary
-    -   **phones**: manners of articulation for each sound
-    -   **symbols**: complete list of ARPABET symbols used by the dictionary
-    -   **vp**: verbal pronunciations of punctuation marks
+    -   **dict**: the main pronouncing dictionary.
+    -   **phones**: manners of articulation for each sound.
+    -   **symbols**: complete list of ARPABET symbols used by the dictionary.
+    -   **vp**: verbal pronunciations of punctuation marks.
 
 To only return the main pronouncing dictionary, set the `data` option to `dict`.
 
@@ -317,7 +317,7 @@ For more information on the project, filing bug reports and feature requests, an
 
 ## Copyright
 
-Copyright &copy; 2016-2024. The Stdlib [Authors][stdlib-authors].
+Copyright &copy; 2016-2025. The Stdlib [Authors][stdlib-authors].
 
 </section>
 
