@@ -48,7 +48,7 @@
     "@stdlib/assert-is-string": "^0.2.2",
     "@stdlib/cli-ctor": "^0.2.2",
     "@stdlib/fs-read-file": "^0.2.2",
-    "@stdlib/fs-read-json": "^0.2.2",
+    "@stdlib/fs-read-json": "^0.2.3",
     "@stdlib/streams-node-stdout": "^0.2.2",
     "@stdlib/string-format": "^0.2.2",
     "@stdlib/utils-copy": "^0.2.2",
