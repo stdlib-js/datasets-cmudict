@@ -51,7 +51,7 @@
     "@stdlib/fs-read-json": "^0.2.4",
     "@stdlib/streams-node-stdout": "^0.2.3",
     "@stdlib/string-format": "^0.2.3",
-    "@stdlib/utils-copy": "^0.2.2",
+    "@stdlib/utils-copy": "^0.2.3",
     "@stdlib/utils-index-of": "^0.2.3",
     "@stdlib/utils-keys": "^0.2.3",
     "@stdlib/error-tools-fmtprodmsg": "^0.2.3"
@@ -67,7 +67,7 @@
     "tape": "git+https://github.com/kgryte/tape.git#fix/globby",
     "istanbul": "^0.4.1",
     "tap-min": "git+https://github.com/Planeshifter/tap-min.git",
-    "@stdlib/bench-harness": "^0.2.2"
+    "@stdlib/bench-harness": "^0.2.3"
   },
   "engines": {
     "node": ">=0.10.0",
