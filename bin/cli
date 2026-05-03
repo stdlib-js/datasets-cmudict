@@ -29,7 +29,7 @@ var indexOf = require( '@stdlib/utils-index-of' );
 var readFileSync = require( '@stdlib/fs-read-file' ).sync;
 var stdout = require( '@stdlib/streams-node-stdout' );
 var CLI = require( '@stdlib/cli-ctor' );
-var cmudict = require( './../lib' );
+var cmudict = require( '@stdlib/datasets-cmudict' );
 
 
 // MAIN //
